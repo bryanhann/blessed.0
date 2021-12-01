@@ -1,5 +1,4 @@
 #!/bin/bash
-#. $0.funcs
-. $(dirname $0)/.bin/activate
+. $0.activate $0
 bless adam
 bless eve
