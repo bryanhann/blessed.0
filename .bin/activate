@@ -1,0 +1,37 @@
+#!/bin/bash
+
+real(){
+    python3 -c "import os.path;print(os.path.realpath(\"$1\"))" 
+}
+
+export ROOT=$(real $0/..)
+bless(){
+    # Install an LBIN proxy for a client.
+
+    # $1 : the caller's $0
+    # $2 : the blessed name
+
+    # determine path to client
+    C=${ROOT}/client.${1}/${1}
+    echo 6666666666 $C
+    #C=$(real ${1}/../blessed.${2})
+
+    # determine path to proxy
+    P=$HOME/.local/bin/blessed.${1}
+
+    # create proxy
+    cat <<HEREDOC > ${P}
+#!/bin/bash
+    export __BLESSED_CLIENT__=${C}
+    export __BLESSED_PROXY__=${P}
+    if [ \$(echo \$0|cut -c1-1) = "/" ];
+    then export __BLESSED_DOT__=
+    else export __BLESSED_DOT__=.
+    fi
+    \${__BLESSED_DOT__} \${__BLESSED_CLIENT__} \$*
+HEREDOC
+
+    # make proxy executable
+    chmod +x ${P}
+}
+
