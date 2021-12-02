@@ -1,4 +1,2 @@
 #!/bin/bash
-. $0.activate $0
-bless adam
-bless eve
+$0.bless adam eve
